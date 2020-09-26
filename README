@@ -1,0 +1,39 @@
+/// README /// UTF8
+
+LAUNCH:
+Exécuter Play.java
+
+DEPLACEMENT:
+Flèches directionnelles pour le déplacement - possibilité de maintenir les enfoncées
+   °Si à vélo: déplacement deux fois plus rapide
+   °Si utilisant bouclier: déplacement deux fois moins rapide, nécessité d'appuyer
+Intéraction à distance: appui sur E
+
+ITEMS & INVENTAIRE:
+-Changer l'item courant: TAB
+-Utiliser l'item courant: SPACE
+   °Epée: pression pour une attaque ou maintien de space pour des attaques successives
+   °Arc: pression pour relâchement immédiat de la flèche ou maintien pour attendre avant de relâcher
+   °Staff: pression simple pour lancer un WaterProjectile
+   °Bouclier: maintien pour utiliser
+
+*Il suffit de passer sur le vélo pour le sélectionner (pas besoin de maintenir ni appuyer sur SPACE)
+*La Cerise ajoute des points de vie (s'ils n'étaient pas déjà au max)
+
+Quand MODE de Test est true, l'ensemble des items de combat ainsi que des cerises, une castlekey et  un vélo sont ajoutés
+à l'inventaire. La possibilité de game over est également écartée. (Game over = hp <= 0, et le player se transforme en
+un fantôme..)
+Sinon, ne seront pas ajoutés d'office: le bouclier, le vélo, nombre de bombes, de flèches, la castlekey.
+
+DIALOGUES ET SIGNS
+Les dialogues et lectures de panneaux sont engagés en appuyant sur E, puis refermés par V.
+
+DIVERS:
+Dans RouteChateau, S et L enregistrent respectivement un FlameSkull et un LogMonster dans la zone, et B crée une bombe en
+face du joueur si cette case est libre, et ceci à volonté. Ces fonctionnalités sont désactivées quand MODE de Test == false.
+
+IMAGES:
+Adaptées à partir de celles données avec la maquette et créées sur GIMP/Paint.net, sauf:
+zelda/stick.png: https://gamepedia.cursecdn.com/minecraft_gamepedia/a/aa/Stick.png?version=71db5a8af84f921199c1614847e5cb31
+
+Par Clément Sanh IN-BA1, Salim Najib IN-BA1

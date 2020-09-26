@@ -1,0 +1,87 @@
+/// CONCEPTION /// UTF8
+
+FICHIERS AJOUTES:
+
+*Dans le package game.rpg:
+ Il y a ici nécessité de se limiter à des concepts de RPG de tous types, allant du visual RPG à Skyrim.
+
+   -game.rpg: abstract class Inventory, l'inventaire étant un élément inhérent de tout RPG mais trop variable d'un RPG
+              à un autre pour être définissable à ce niveau d'abstraction
+
+   -game.rpg.actor:
+      *interface EnvironmentEntity: désigne la propriété de "faire partie du décors" permettant des accès spéciaux - dans
+       ARPG: via un test dans canEnter d'ARPGBehavior, une EnvironmentEntity peut entrer n'importe où, ce qui rend cette
+       interface propice pour les éléments naturels tels que les Rocks et Waterfall, ainsi que les PNJ
+      *interface FlyableEntity: modélisation de toute entité avec la capacité au moins ponctuelle de voler, souhaitable
+       dans nombre de RPGs
+      *interface VulnerableActor: modélisation de toute entité avec la capacité de perdre des points de vie
+
+*Dans le package game.areagame:
+ Areagame étend le concept d'un jeu avec graphismes et sur aire ouverte.
+
+   -game.areagame.actor:
+      *abstract class Projectile: propre à tout jeu d'aire pour complexifier les combats.
+      *abstract class CollectableAreaEntity: Sera ensuite implémentée en tant que Heart, Coin, Castlekey, etc. Ces objets
+       ne sont rien de plus, tant qu'ils ne sont pas dans la main du joueur, que des collectables. Aussi, le concept de
+       collectable est important dans tout areagame avec un minimum de gestion de ressources.
+      *interface CollectableDropperEntity: confère la propriété d'instancier un CollectableAreaEntity qui ne peut pas,
+       même abstraitement, définir un objet, d'où le choix d'une interface pour ajouter cette fonctionnalité. Cette
+       solution présente également l'avantage de la compatibilité avec le code existant.
+
+*Dans le package game.arpg:
+ Programmation des concepts inhérents au jeu développé dans le cadre du Mini Projet 2.
+
+ -game.arpg.actor:
+      *Implémentation concrète de l'inventaire et de la GUI au plus proche de l'ARPGPlayer.
+      *La classe abstraite Monstre et ses classes dérivées n'ont pas reçu de package propre pour des raisons d'encapsulation
+       des méthodes, puisque définir un nouveau package forcerait la mise en public de méthodes sensibles telles que loseHp.
+       Nous présenterons la solution que nous avons apporté au problème d'encapsulation au niveau du package dans
+       l'explication d'ARPGAggressiveVisitor ci-dessous.
+      *Diverses classes d'éléments environnementaux, de signaux, etc.
+
+ -game.arpg.handler:
+      *interface ARPGAggresiveVisitor: modélisation d'une entité pouvant apposer des dommages aux VulnerableActors,
+       ces derniers étant, dans ce projet, uniquement les Monstres, mais VulnerableActor pourrait représenter une
+       plus grande classe d'acteurs. Le gestionnaire d'intéractions propre à chaque acteur pouvant attaquer un
+       VulnerableActor implémentera alors cette interface.
+
+EXTENSIONS ENTREPRISES:
+
+*AJOUT DE ZONES: toutes les maisons ont été investies + RouteTemple/Temple + une surprise en allant de Route vers RouteChateau
+ + la Grotte et GrotteMew
+ °Une minimap de téléportation/fast travel: pour y accéder, appuyer sur E devant la TV de PerterburgTimmy (soit la maison dans la Ferme) ou
+  encore celle de PeterburgCenter (magasin le plus à gauche de Village -> passer dans la porte ouverte). Cette minimap
+  est implémentée comme une ARPGArea MiniMap.
+
+*EVENEMENTS RELIES A DES SIGNAUX:
+ °La porte de cette grotte (représentée fermée par un éboulement au nord est du Village)
+  s'ouvre après activation de la plaque de pression sur la falaise au nord du Village - passer par la porte au sud de Ferme
+  pour y accéder.
+ °Un coffre à code secret activable par 5 torches à allumer dans un ordre déterminé dans l'area GrotteMew, accessible
+  en traversant les chambres à monstres du côté gauche de la Grotte sus-dite.
+     Solution: Activer la torche gauche du mur Sud, puis la torche droite du mur Sud, puis la torche centrale du mur Nord,
+        puis la torche centrale du mur Est, et enfin la torche centrale du mur Ouest.
+     Sera ainsi ouvert un coffre contenant un bouclier, il suffit d'intéragir avec (E) pour obtenir la récompense.
+     Les classes Torch et Chest ont été codées à cet effet et sont utilisées dans l'area GrotteMew.
+ °Bonus de l'orbe et son pont en bois activé par lancer de flèche sur l'orbe. Un staff animé est également à collecter
+  dans le temple, comme le présente le trailer du MiniProjet2.
+
+*DIALOGUES, PANNEAUX, ELEMENTS DE SCENARIO:
+ °Dans chaque maison en bois attend un PNJ en attente d'intéraction. Ces NPC là héritent d'une super classe Assistant.
+ °Il existe aussi des panneaux dont l'un donnant le code du chest de GrotteMew, situé au fond du labyrinthe du côté droit
+  de Grotte.
+ °NPCQuest propose une quête au joueur qui le mènera dans la grotte pour retrouver Mew et ensuite... lui vendre Mew.
+
+ #Nous avions de grands projets pour ShopAssistant mais que nous n'avons pas pu achever à temps...
+
+*COMPORTEMENTS ADDITIONNELS DU JOUEUR (COMBAT/ANIMATIONS):
+ °Ajout du vélo comme ARPGItem et state de l'ARPGPlayer -> déplacement 2x plus rapide.
+ °Idem pour le bouclier: 2x moins de dégâts mais 2x moins de vitesse.
+ °Animation du joueur portant et posant la bombe, donnant lieu à un nouveau state pour l'ARPGPlayer.
+
+*DIVERS:
+ °Ajout de cerises et cerisiers; les cerises sont un ARPGItem et une CollectableAreaEntity. Lorsque consommées, elles
+  régénèrent des points de vie.
+ °Ajout de la cascade dans Route.
+
+Par Clément Sanh IN-BA1, Salim Najib IN-BA1
